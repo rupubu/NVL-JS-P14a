@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+    <title>Práctica de manipulación DOM</title>
+    <style media="screen">
+            body {
+              width: 80%;
+              margin-left: auto;
+              margin-right: auto;
+            }
+      /* Cabecera */
+            .cabecera {
+              font-family: 'PT Sans Narrow', sans-serif;
+      
+              height: 100px;
+              /* Solo para pruebas 
+              background-color: yellow;*/
+            }
+            .cabecera > img {
+              float: left;
+              width: 300px;
+            }
+            .cabecera > p {
+              margin: 0;
+              text-align: center;
+              min-width: 550px;
+              /*transform: translate(-50%, 0);*/
+              font-size: 80px;
+              font-weight: bold;
+              /* Solo para pruebas 
+              background-color: grey;*/
+            }
+      /* Columnas */
+            .columna {
+              float: left;
+              width: 80%;
+            }
+            .izquierda {
+              width: 60%;
+              /* Solo para pruebas 
+              background-color: orange;*/
+            }
+            .derecha {
+              width: 40%;
+              /* Solo para pruebas 
+              background-color: chocolate;*/
+            }
+      /* Columna Izquierda */
+            .contpelicula {
+              border-radius: 25px;
+              margin-top: 5px;
+              padding: 10px;
+              font-family: 'Acme', sans-serif;
+              height: 100%;
+              /* Solo para pruebas*/
+              background-color: lightgrey;
+            }
+            .contpelicula > img {
+              float: left;
+              margin: 5px 10px 15px 5px;
+              width: 300px;
+              border-radius: 25px;
+            }
+            .contpelicula > p:first-of-type {
+              font-size: 40px;
+              font-weight: bold;
+              margin-top: 5px;
+              margin-bottom: auto;
+              display: flex;
+              /* Solo para pruebas
+              background-color: purple;*/
+            }
+            p:first-of-type ~ p {
+              display: flex;
+              /* Solo para pruebas
+              background-color: blue;*/
+            }
+            .enlace {
+              text-decoration: none;
+              color: black;
+            }
+            .enlace:hover {
+              font-weight: bold;
+            }
+        /* Columna Derecha */
+            .contfotogramas {
+              padding-left: 5px;
+              margin-top: 5px;
+              margin-left: auto;
+              margin-right: auto;
+            }
+            .contfotogramas img {
+              width: 45%;
+              padding: 3px;
+              border-radius: 25px;
+            }
+            .clear {
+              clear: both;
+            }
+    </style>
+    <script type="text/javascript" src="./Film.JSON"></script>
+    <script type="text/javascript">
+        var Peliculas = JSON.parse(JSON.stringify(Pelis));
+
+        function Inicio() {
+          if( Peliculas.length > 0 ) {
+            var aIndex = 0;
+            var cIndex = 0;
+            var dIndex = 0;
+            var oRama;
+            var txt;
+
+            do {
+              CreaPlantilla(Peliculas[cIndex].Images.length);
+              var obj = document.querySelectorAll(".contpelicula p");
+              for(var aux in Peliculas[cIndex]) {
+                if ((aux !== "Images") === true && (aux !=="Poster") === true && (aux !== "Response") === true) {
+                  switch(aux) {
+                      case "Title":
+                        obj[aIndex].textContent = eval('Peliculas[' + cIndex + '].' + aux);
+                        break;
+                      case "imdbID":
+                        obj[aIndex].textContent = aux + ": ";
+                        obj[aIndex].style.display = "inline";
+                        oRama = obj[aIndex].appendChild(document.createElement("a"));
+                        oRama.innerText = eval('Peliculas[' + cIndex + '].' + aux);
+                        oRama.setAttribute("class", "enlace");
+                        oRama.href = "https://www.imdb.com/title/" + eval('Peliculas[' + cIndex + '].' + aux) + "/"
+                        obj[aIndex].appendChild(oRama);
+                        break;
+                      case "Genre":
+                        obj[aIndex].textContent = aux + ":";
+                        obj[aIndex].style.display = "inline";
+                        txt = eval('Peliculas[' + cIndex + '].' + aux).split(",");
+                        for (var fIndex = 0; fIndex < txt.length; fIndex++) {
+                          switch (txt[fIndex].trim()) {
+                            case "Comedy":
+                              oRama = obj[aIndex].appendChild(document.createElement("img"));
+                              oRama.title = (txt[fIndex].trim());
+                              oRama.style.width = "32px";
+                              oRama.style.marginLeft = "3px";
+                              oRama.src = "IMG/comedia.png"; 
+                              obj[aIndex].appendChild(oRama);
+                              break;
+                            case "Sci-Fi":
+                              oRama = obj[aIndex].appendChild(document.createElement("img"));
+                              oRama.title = (txt[fIndex].trim());
+                              oRama.style.width = "32px";
+                              oRama.style.marginLeft = "3px";
+                              oRama.src = "IMG/sci-fi.jpg"; 
+                              obj[aIndex].appendChild(oRama);
+                              break;
+                            case "Drama":
+                              oRama = obj[aIndex].appendChild(document.createElement("img"));
+                              oRama.title = (txt[fIndex].trim());
+                              oRama.style.width = "32px";
+                              oRama.style.marginLeft = "3px";
+                              oRama.src = "IMG/drama.png";
+                              obj[aIndex].appendChild(oRama);
+
+                              break;
+                            case "Fantasy":
+                              oRama = obj[aIndex].appendChild(document.createElement("img"));
+                              oRama.title = (txt[fIndex].trim());
+                              oRama.style.width = "32px";
+                              oRama.style.marginLeft = "3px";
+                              oRama.src = "IMG/fantasia.png";
+                              obj[aIndex].appendChild(oRama);
+                              break;
+                            case "Action":
+                              oRama = obj[aIndex].appendChild(document.createElement("img"));
+                              oRama.title = (txt[fIndex].trim());
+                              oRama.style.width = "32px";
+                              oRama.style.marginLeft = "3px";
+                              oRama.src = "IMG/accion.png";
+                              obj[aIndex].appendChild(oRama);
+                              break;
+                            default:
+                              oRama = obj[aIndex].appendChild(document.createElement("img"));
+                              oRama.title = (txt[fIndex].trim());
+                              oRama.style.width = "32px";
+                              oRama.style.marginLeft = "3px";
+                              oRama.src = "IMG/sinimagencategoria.png";
+                              obj[aIndex].appendChild(oRama);
+                          } 
+                        }
+                        break;
+                      default:
+                        obj[aIndex].textContent = aux + ": " + eval('Peliculas[' + cIndex + '].' + aux);
+                  }
+                  aIndex++;
+                }
+              }
+              obj = document.querySelectorAll(".contpelicula > img");
+              obj[cIndex].src = Peliculas[cIndex].Poster;  
+
+              obj = document.querySelectorAll(".contfotogramas > img");
+              for (ima in Peliculas[cIndex].Images) {
+                obj[dIndex].src = Peliculas[cIndex].Images[ima];
+                dIndex++;
+              } 
+              cIndex++;
+            } 
+            while (cIndex < Peliculas.length);
+          }
+        }  
+        
+        function CreaPlantilla(nNumerodeImagenes) {
+          var aFichaPelicula = [];
+          var oNodo1;
+          var oNodo2;
+          var oNodo3;
+          var oHijosNodo3;
+          
+          var oRaiz = document.querySelector('.cabecera');
+
+          oNodo1 = document.createElement("div");
+          oNodo1.setAttribute("class","clear fichapelicula");
+          oRaiz.parentNode.appendChild(oNodo1);
+          
+          oNodo2 = oNodo1.appendChild(document.createElement("div"));
+          oNodo2.setAttribute("class","columna izquierda");
+          oNodo1.appendChild(oNodo2);
+          
+          oNodo3 = oNodo2.appendChild(document.createElement("div"));
+          oNodo3.setAttribute("class","contpelicula");
+          oNodo2.appendChild(oNodo3);
+
+          oHijosNodo3 = oNodo3.appendChild(document.createElement("img"));
+          oNodo3.appendChild(oHijosNodo3);
+          for (var aIndex = 0; aIndex < 18; aIndex++) {
+              oHijosNodo3 = oNodo3.appendChild(document.createElement("p"))
+              if (aIndex === 9) {
+                  oHijosNodo3.setAttribute("class", "clear");
+              }
+              oNodo3.appendChild(oHijosNodo3);
+          }
+          
+          oNodo2 = oNodo1.appendChild(document.createElement("div"));
+          oNodo2.setAttribute("class","columna derecha");
+          oNodo1.appendChild(oNodo2);
+                    
+          oNodo3 = oNodo2.appendChild(document.createElement("div"));
+          oNodo3.setAttribute("class","contfotogramas");
+          oNodo2.appendChild(oNodo3);
+    
+          if (nNumerodeImagenes > 0) {
+            for (var aIndex = 0; aIndex < nNumerodeImagenes; aIndex++) {
+              oHijosNodo3 = oNodo3.appendChild(document.createElement("img"));
+              oNodo3.appendChild(oHijosNodo3);
+            }
+          }
+        }
+
+
+
+        //Falta el pie
+
+
+        
+    </script>
+  </head>
+  <body onload="Inicio()">
+    <div class="cabecera">
+      <img src="IMG/IMGCAB.png" alt="Rollo de película">
+      <p>Listado de películas</p>
+    </div>
+  </body>
+</html>
